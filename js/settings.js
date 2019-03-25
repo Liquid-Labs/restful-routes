@@ -1,6 +1,6 @@
 const settings = {
-  altIDMatchers : {},
-  resourcesMap : {},
+  altIDMatchers  : {},
+  resourcesMap   : {},
   contextMappers : {},
 }
 
@@ -45,7 +45,7 @@ export const addResource = (resourceName) =>
 export const setResources = (refresh) => settings.resourcesMap = refresh
 
 // for managing context mapping
-export const getContextMapperForResource = (resourceName, cxtResourceName) =>
+export const getContextMapperForResource = (resourceName, ctxResourceName) =>
   (settings.contextMapper[resourceName]
     && settings.contextMappers[resourceName][ctxResourceName])
 

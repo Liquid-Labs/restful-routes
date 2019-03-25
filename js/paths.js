@@ -43,9 +43,9 @@ export const generateGlobalListPath = (resourceName) => `/${resourceName}/`
  */
 export const generateContextListPath = (ctxResourceName, ctxPubID, resourceName) => {
   const contextMapper =
-    settings.getContextMapperFor(resourceName, cxtResourceName)
+    settings.getContextMapperFor(resourceName, ctxResourceName)
   if (contextMapper) {
-    const { mappedContext, mappedID } = resourceMapper(ctxPubID)
+    const { mappedContext, mappedID } = contextMapper(ctxPubID)
     return `/${mappedContext}/${mappedID || ':contextID' }/${resourceName}/`
   }
   else return `/${ctxResourceName}/${ctxPubID || ':contextID'}/${resourceName}`
@@ -123,19 +123,19 @@ export const extractPathInfo = (path = window.location.pathname) => {
       : ACTION_MODE_VIEW // default
   return isItemPathFromBits(bits)
     ? { resourceName : bits[0],
-        pubID : bits[1] ,
-        isItem: true,
-        isList: false,
-        actionMode }
+      pubID        : bits[1] ,
+      isItem       : true,
+      isList       : false,
+      actionMode }
     : /* else is a list or 'create' path */ bits.length === 1 // global list
-      ? { resourceName : bits[0], isItem: false, isList: true, actionMode }
+      ? { resourceName : bits[0], isItem : false, isList : true, actionMode }
       : bits.length === 2 // then it's a create path
-        ? { resourceName: bits[0], isItem: true, isList: false, actionMode }
-        : { resourceName: bits[2], // context list
-          ctxResourceName: bits[0],
-          ctxPubID : bits[1],
-          isItem : false,
-          isList : true,
+        ? { resourceName : bits[0], isItem : true, isList : false, actionMode }
+        : { resourceName    : bits[2], // context list
+          ctxResourceName : bits[0],
+          ctxPubID        : bits[1],
+          isItem          : false,
+          isList          : true,
           actionMode }
 }
 
@@ -161,22 +161,20 @@ export const validatePath = (path = window.location.pathname) => {
     extractPathInfo(path)
 
   // First, the resources check.
-  if (!settings.isResourceDefined(resourceName))
-    throw new Error(`Unknown resource '${resourceName}' found in path '${path}'.`)
-  if (ctxResourceName && !settings.isResourceDefined(ctxResourceName))
-    throw new Error(`Unknown context resource '${ctxResourceName}' found in path '${path}'.`)
+  if (!settings.isResourceDefined(resourceName)) {throw new Error(`Unknown resource '${resourceName}' found in path '${path}'.`)}
+  if (ctxResourceName && !settings.isResourceDefined(ctxResourceName)) {throw new Error(`Unknown context resource '${ctxResourceName}' found in path '${path}'.`)}
 
   // Now check the form of the ID.
   if (pubID
       && !(regex.uuid.test(pubID)
           || settings.getAltIDMatchersForResource(resourceName).some((idRegex) =>
-                idRegex.test(pubID)))) {
+            idRegex.test(pubID)))) {
     throw new Error(`No valid resource ID found where expected in path '${path}'. Do you need to define a valid alternate ID?`)
   }
   if (ctxPubID
       && !(regex.uuid.test(ctxPubID)
           || settings.getAltIDMatchersForResource(ctxResourceName).some((idRegex) =>
-                idRegex.test(ctxPubID)))) {
+            idRegex.test(ctxPubID)))) {
     throw new Error(`No valid resource ID found where expected in path '${path}'. Do you need to define a valid alternate ID?`)
   }
 

@@ -22,31 +22,31 @@ describe('paths', () => {
   describe('extractPathInfo', () => {
     test('decomposes standard "get-by-ID" construction', () => {
       expect(paths.extractPathInfo(`/persons/${testUUID}/`)).toEqual({
-        resourceName: 'persons',
-        pubID: testUUID,
-        isItem: true,
-        isList: false,
-        actionMode: paths.ACTION_MODE_VIEW
+        resourceName : 'persons',
+        pubID        : testUUID,
+        isItem       : true,
+        isList       : false,
+        actionMode   : paths.ACTION_MODE_VIEW
       })
     })
 
     test(`decomposes alternate "self-ID" for configured resource`, () => {
       expect(paths.extractPathInfo(`/persons/self/`)).toEqual({
-        resourceName: 'persons',
-        pubID: 'self',
-        isItem: true,
-        isList: false,
-        actionMode: paths.ACTION_MODE_VIEW
+        resourceName : 'persons',
+        pubID        : 'self',
+        isItem       : true,
+        isList       : false,
+        actionMode   : paths.ACTION_MODE_VIEW
       })
     })
 
     test('properly decomposes item paths for unknown resources', () => {
       const result = {
-        resourceName: 'foos',
-        pubID: testUUID,
-        isItem: true,
-        isList: false,
-        actionMode: paths.ACTION_MODE_VIEW
+        resourceName : 'foos',
+        pubID        : testUUID,
+        isItem       : true,
+        isList       : false,
+        actionMode   : paths.ACTION_MODE_VIEW
       }
       expect(paths.extractPathInfo(`/foos/${testUUID}/`)).toEqual(result)
       result.pubID = 'self'
@@ -60,10 +60,10 @@ describe('paths', () => {
       `/persons/create/`,
       `/persons/${testUUID}/`,
       `/persons/${testUUID}/edit/`,
-      `/places/${testUUID}/persons/`])
-    (`passes valid path '%s' without complaint`, (path) => {
-      expect(paths.validatePath(path)).toBe(path)
-    })
+      `/places/${testUUID}/persons/`])(
+      `passes valid path '%s' without complaint`, (path) => {
+        expect(paths.validatePath(path)).toBe(path)
+      })
 
     test('raises an error given an unknown item list path', () => {
       expect(() => paths.validatePath('/foos/')).toThrow(/Unknown resource/)
