@@ -1,5 +1,5 @@
 {
-  "name": "@liquid-labs/restful-routes",
+  "name": "@liquid-labs/restful-paths",
   "version": "1.0.0-prototype.0",
   "description": "Specification and tools for a concrete REST-ful API and routing schema.",
   "main": "dist/index.js",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Liquid-Labs/restful-routes.git"
+    "url": "https://github.com/Liquid-Labs/restful-paths.git"
   },
   "keywords": [
     "rest"
@@ -30,9 +30,9 @@
   "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Liquid-Labs/restful-routes/issues"
+    "url": "https://github.com/Liquid-Labs/restful-paths/issues"
   },
-  "homepage": "https://github.com/Liquid-Labs/restful-routes#readme",
+  "homepage": "https://github.com/Liquid-Labs/restful-paths#readme",
   "devDependencies": {
     "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.16",
     "@liquid-labs/regex-repo": "^1.0.0-alpha.3"
