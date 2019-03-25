@@ -1,0 +1,41 @@
+{
+  "name": "@liquid-labs/restful-routes",
+  "version": "1.0.0-prototype.0",
+  "description": "Specification and tools for a concrete REST-ful API and routing schema.",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "files": [
+    "README.md",
+    "LICENSE.txt",
+    "dist/"
+  ],
+  "scripts": {
+    "start": "catalyst-scripts start",
+    "pretest": "catalyst-scripts pretest",
+    "test": "catalyst-scripts test",
+    "build": "catalyst-scripts build",
+    "lint": "catalyst-scripts lint",
+    "lint-fix": "catalyst-scripts lint-fix",
+    "install-clean": "rm -rf package-lock.json node_modules/ && npm install",
+    "prepare": "rm -rf dist && npm run lint && npm run build",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Liquid-Labs/restful-routes.git"
+  },
+  "keywords": [
+    "rest"
+  ],
+  "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Liquid-Labs/restful-routes/issues"
+  },
+  "homepage": "https://github.com/Liquid-Labs/restful-routes#readme",
+  "devDependencies": {
+    "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.16",
+    "@liquid-labs/regex-repo": "^1.0.0-alpha.3"
+  },
+  "dependencies": {}
+}
