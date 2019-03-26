@@ -43,7 +43,7 @@ export const generateGlobalListPath = (resourceName) => `/${resourceName}/`
  */
 export const generateContextListPath = (ctxResourceName, ctxPubID, resourceName) => {
   const contextMapper =
-    settings.getContextMapperFor(resourceName, ctxResourceName)
+    settings.getContextMapperForResource(resourceName, ctxResourceName)
   if (contextMapper) {
     const { mappedContext, mappedID } = contextMapper(ctxPubID)
     return `/${mappedContext}/${mappedID || ':contextID' }/${resourceName}/`
