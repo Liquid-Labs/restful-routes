@@ -121,22 +121,36 @@ export const extractPathInfo = (path = window.location.pathname) => {
     : path.endsWith('/create/')
       ? ACTION_MODE_CREATE
       : ACTION_MODE_VIEW // default
-  return isItemPathFromBits(bits)
-    ? { resourceName : bits[0],
-      pubID        : bits[1] ,
+
+  if (isItemPathFromBits(bits)) {
+    const pubID = bits[1]
+    const isUUID = regex.uuid.test(pubID)
+    return {
+      resourceName : bits[0],
+      pubID,
+      isUUID,
       isItem       : true,
       isList       : false,
       actionMode }
-    : /* else is a list or 'create' path */ bits.length === 1 // global list
-      ? { resourceName : bits[0], isItem : false, isList : true, actionMode }
-      : bits.length === 2 // then it's a create path
-        ? { resourceName : bits[0], isItem : true, isList : false, actionMode }
-        : { resourceName    : bits[2], // context list
-          ctxResourceName : bits[0],
-          ctxPubID        : bits[1],
-          isItem          : false,
-          isList          : true,
-          actionMode }
+  }
+  else if (bits.length === 1) { // it's a 'global' list
+    return { resourceName : bits[0], isItem : false, isList : true, actionMode }
+  }
+  else if (bits.length === 2) { // it's a 'create' path
+    return { resourceName : bits[0], isItem : true, isList : false, actionMode }
+  }
+  else { // it's a context list
+    const ctxPubID = bits[1]
+    const isUUID = regex.uuid.test(ctxPubID)
+    return {
+      resourceName    : bits[2], // context list
+      ctxResourceName : bits[0],
+      ctxPubID,
+      isUUID,
+      isItem          : false,
+      isList          : true,
+      actionMode }
+  }
 }
 
 // for path validation

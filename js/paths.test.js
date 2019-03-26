@@ -24,6 +24,7 @@ describe('paths', () => {
       expect(paths.extractPathInfo(`/persons/${testUUID}/`)).toEqual({
         resourceName : 'persons',
         pubID        : testUUID,
+        isUUID       : true,
         isItem       : true,
         isList       : false,
         actionMode   : paths.ACTION_MODE_VIEW
@@ -34,6 +35,7 @@ describe('paths', () => {
       expect(paths.extractPathInfo(`/persons/self/`)).toEqual({
         resourceName : 'persons',
         pubID        : 'self',
+        isUUID       : false,
         isItem       : true,
         isList       : false,
         actionMode   : paths.ACTION_MODE_VIEW
@@ -44,12 +46,14 @@ describe('paths', () => {
       const result = {
         resourceName : 'foos',
         pubID        : testUUID,
+        isUUID       : true,
         isItem       : true,
         isList       : false,
         actionMode   : paths.ACTION_MODE_VIEW
       }
       expect(paths.extractPathInfo(`/foos/${testUUID}/`)).toEqual(result)
       result.pubID = 'self'
+      result.isUUID = false
       expect(paths.extractPathInfo(`/foos/self/`)).toEqual(result)
     })
   })
