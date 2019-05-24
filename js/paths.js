@@ -35,20 +35,20 @@ export const generateGlobalListPath = (resourceName) => `/${resourceName}/`
 
 /**
  * `generateContextListPath` returns the proper path to access a resource
- * within the specified context. If `ctxPubID` is falsy, the placeholder
- * ":contextID" will be inserted. If you need another placeholder, specify it.
+ * within the specified context. If `ctxPubId` is falsy, the placeholder
+ * ":contextId" will be inserted. If you need another placeholder, specify it.
  *
  * This method performs no validation. Call `validatePath` on the result if you
  * need to check the validity of the resource names.
  */
-export const generateContextListPath = (ctxResourceName, ctxPubID, resourceName) => {
+export const generateContextListPath = (ctxResourceName, ctxPubId, resourceName) => {
   const contextMapper =
     settings.getContextMapperForResource(resourceName, ctxResourceName)
   if (contextMapper) {
-    const { mappedContext, mappedID } = contextMapper(ctxPubID)
-    return `/${mappedContext}/${mappedID || ':contextID' }/${resourceName}/`
+    const { mappedContext, mappedId } = contextMapper(ctxPubId)
+    return `/${mappedContext}/${mappedId || ':contextId' }/${resourceName}/`
   }
-  else return `/${ctxResourceName}/${ctxPubID || ':contextID'}/${resourceName}`
+  else return `/${ctxResourceName}/${ctxPubId || ':contextId'}/${resourceName}`
 }
 
 /**
@@ -61,26 +61,26 @@ export const generateItemCreatePath = (resourceName) =>
   `/${resourceName}/create/`
 
 /**
- * `generateItemViewPath` returns the proper path to view an item. If `itemID`
+ * `generateItemViewPath` returns the proper path to view an item. If `itemId`
  * is falsy, the placeholder ':id' will be used. Specify alternate placeholder
  * if necessary.
  *
  * This method performs no validation. Call `validatePath` on the result if you
  * need to check the validity of the resource name.
  */
-export const generateItemViewPath = (resourceName, itemID) =>
-  `/${resourceName}/${itemID || ':id'}/`
+export const generateItemViewPath = (resourceName, itemId) =>
+  `/${resourceName}/${itemId || ':id'}/`
 
 /**
- * `generateItemEditPath` returns the proper path to edit an item. If `itemID`
+ * `generateItemEditPath` returns the proper path to edit an item. If `itemId`
  * is falsy, the placeholder ':id' will be used. Specify alternate placeholder
  * if necessary.
  *
  * This method performs no validation. Call `validatePath` on the result if you
  * need to check the validity of the resource name.
  */
-export const generateItemEditPath = (resource, itemID) =>
-  `/${resource}/${itemID || ':id'}/edit/`
+export const generateItemEditPath = (resource, itemId) =>
+  `/${resource}/${itemId || ':id'}/edit/`
 
 // for testing path types and extracting info from a path
 
@@ -93,10 +93,10 @@ export const ACTION_MODE_EDIT = 'edit'
  * result is an object with fields:
  *
  * - `resourceName` : the final, displayed resource name
- * - `pubId` : the public ID of the final, displayed resource, or `undefined`
+ * - `pubId` : the public Id of the final, displayed resource, or `undefined`
  * - `ctxResourceName` : the name of the context resource in a context list
  *      or `undefined`
- * - `ctxPubID` : the public ID of the context resource in a context list or
+ * - `ctxPubId` : the public Id of the context resource in a context list or
  *      `undefined`
  * - `isItem` : a boolean
  * - `isList` : a boolean
@@ -123,12 +123,12 @@ export const extractPathInfo = (path = window.location.pathname) => {
       : ACTION_MODE_VIEW // default
 
   if (isItemPathFromBits(bits)) {
-    const pubID = bits[1]
-    const isUUID = regex.uuid.test(pubID)
+    const pubId = bits[1]
+    const isUuid = regex.uuid.test(pubId)
     return {
       resourceName : bits[0],
-      pubID,
-      isUUID,
+      pubId,
+      isUuid,
       isItem       : true,
       isList       : false,
       actionMode }
@@ -140,13 +140,13 @@ export const extractPathInfo = (path = window.location.pathname) => {
     return { resourceName : bits[0], isItem : true, isList : false, actionMode }
   }
   else { // it's a context list
-    const ctxPubID = bits[1]
-    const isUUID = regex.uuid.test(ctxPubID)
+    const ctxPubId = bits[1]
+    const isUuid = regex.uuid.test(ctxPubId)
     return {
       resourceName    : bits[2], // context list
       ctxResourceName : bits[0],
-      ctxPubID,
-      isUUID,
+      ctxPubId,
+      isUuid,
       isItem          : false,
       isList          : true,
       actionMode }
@@ -164,32 +164,32 @@ export const extractPathInfo = (path = window.location.pathname) => {
  *    const pathInfo = routes.extractPathInfo(routes.validatePath(path))
  *
  * This method does not check wether any speciifc item or context resource
- * exists, and merely checks the form of any IDs present. Furthermore, the
+ * exists, and merely checks the form of any Ids present. Furthermore, the
  * context may be invalid due to context mapping, even if the resources named
  * are themselves valid.
  */
 export const validatePath = (path = window.location.pathname) => {
   // TODO: future versions should configure and check the context settings
   // as well. I.e., X is a valid resource, but is it a valid context?
-  const { resourceName, pubID, ctxResourceName, ctxPubID } =
+  const { resourceName, pubId, ctxResourceName, ctxPubId } =
     extractPathInfo(path)
 
   // First, the resources check.
   if (!settings.isResourceDefined(resourceName)) {throw new Error(`Unknown resource '${resourceName}' found in path '${path}'.`)}
   if (ctxResourceName && !settings.isResourceDefined(ctxResourceName)) {throw new Error(`Unknown context resource '${ctxResourceName}' found in path '${path}'.`)}
 
-  // Now check the form of the ID.
-  if (pubID
-      && !(regex.uuid.test(pubID)
-          || settings.getAltIDMatchersForResource(resourceName).some((idRegex) =>
-            idRegex.test(pubID)))) {
-    throw new Error(`No valid resource ID found where expected in path '${path}'. Do you need to define a valid alternate ID?`)
+  // Now check the form of the Id.
+  if (pubId
+      && !(regex.uuid.test(pubId)
+          || settings.getAltIdMatchersForResource(resourceName).some((idRegex) =>
+            idRegex.test(pubId)))) {
+    throw new Error(`No valid resource Id found where expected in path '${path}'. Do you need to define a valid alternate Id?`)
   }
-  if (ctxPubID
-      && !(regex.uuid.test(ctxPubID)
-          || settings.getAltIDMatchersForResource(ctxResourceName).some((idRegex) =>
-            idRegex.test(ctxPubID)))) {
-    throw new Error(`No valid resource ID found where expected in path '${path}'. Do you need to define a valid alternate ID?`)
+  if (ctxPubId
+      && !(regex.uuid.test(ctxPubId)
+          || settings.getAltIdMatchersForResource(ctxResourceName).some((idRegex) =>
+            idRegex.test(ctxPubId)))) {
+    throw new Error(`No valid resource Id found where expected in path '${path}'. Do you need to define a valid alternate Id?`)
   }
 
   return path

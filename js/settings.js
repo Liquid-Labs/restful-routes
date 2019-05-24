@@ -1,39 +1,39 @@
 const settings = {
-  altIDMatchers  : {},
+  altIdMatchers  : {},
   resourcesMap   : {},
   contextMappers : {},
 }
 
 // API methods
 
-// for managing alternate IDs
+// for managing alternate Ids
 /**
- * `getAltIDMatchers` returns an object defining valid 'alternate IDs'. The
+ * `getAltIdMatchers` returns an object defining valid 'alternate Ids'. The
  * object keys are resource names and the value is a regular expression which
- * will test for valid IDs.
+ * will test for valid Ids.
  */ // TODO: return a deep copy for safety
-export const getAltIDMatchers = () => Object.assign({}, settings.altIDMatchers)
+export const getAltIdMatchers = () => Object.assign({}, settings.altIdMatchers)
 
-export const getAltIDMatchersForResource = (resourceName) => {
-  const matchers = settings.altIDMatchers[resourceName]
+export const getAltIdMatchersForResource = (resourceName) => {
+  const matchers = settings.altIdMatchers[resourceName]
   return (matchers && matchers.slice(0)) || []
 }
 
-export const addAltIDMatcher = (resourceName, idRegexOrArr) => {
-  if (!settings.altIDMatchers[resourceName]) {
-    settings.altIDMatchers[resourceName] = []
+export const addAltIdMatcher = (resourceName, idRegexOrArr) => {
+  if (!settings.altIdMatchers[resourceName]) {
+    settings.altIdMatchers[resourceName] = []
   }
   if (Array.isArray(idRegexOrArr)) {
-    settings.altIDMatchers[resourceName] =
-      settings.altIDMatchers[resourceName].concat(idRegexOrArr)
+    settings.altIdMatchers[resourceName] =
+      settings.altIdMatchers[resourceName].concat(idRegexOrArr)
   }
   else {
-    settings.altIDMatchers[resourceName].push(idRegexOrArr)
+    settings.altIdMatchers[resourceName].push(idRegexOrArr)
   }
 }
 
-export const setAltIDMatchers = (refresh) => // TODO: verify refresh object in non-production environment
-  settings.altIDMatchers = refresh
+export const setAltIdMatchers = (refresh) => // TODO: verify refresh object in non-production environment
+  settings.altIdMatchers = refresh
 
 // for managing valid resources
 export const isResourceDefined = (resourceName) =>
