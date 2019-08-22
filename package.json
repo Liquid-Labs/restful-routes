@@ -1,6 +1,6 @@
 {
   "name": "@liquid-labs/restful-paths",
-  "version": "1.0.0-prototype.3",
+  "version": "1.0.0-prototype.4",
   "description": "Specification and tools for a concrete REST-ful API and routing schema.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
